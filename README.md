@@ -1,5 +1,7 @@
-# Strongbox Browser AutoFill Extension
-Strongbox Browser AutoFill Extension official distributions can be found on the relevant browser stores here:
+# Strongbox Browser AutoFill Extension (Fork)
+Personal fork of the Strongbox Browser AutoFill Extension with customized UI styling (compact layout, macOS-native aesthetic). No functional changes to the underlying autofill logic.
+
+Official distributions can be found on the relevant browser stores here:
 
 - Chrome/Chromium: https://chrome.google.com/webstore/detail/strongbox-autofill/mnilpkfepdibngheginihjpknnopchbn
 - Firefox: https://addons.mozilla.org/firefox/addon/strongbox-autofill/
