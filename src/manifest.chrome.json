@@ -59,8 +59,8 @@
     "favicon"
   ],
   "host_permissions": [
-    "http:
-    "https:
+    "http://*/*",
+    "https://*/*"
   ],
   "author": "Phoebe Code Limited",
   "minimum_chrome_version": "88",
@@ -72,8 +72,8 @@
     {
       "all_frames": true,
       "matches": [
-        "http:
-        "https:
+        "http://*/*",
+        "https://*/*"
       ],
       "js": [
         "js/content.bundle.js"
