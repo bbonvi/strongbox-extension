@@ -344,7 +344,7 @@ export default function InlineMiniFieldMenu(props: InlineMiniFieldMenuProps) {
       }}
     >
       {!showLargeTextView && (
-        <MenuList autoFocusItem={false} disabledItemsFocusable={true} sx={{ pb: 0, pt: '4px' }}>
+        <MenuList autoFocusItem={false} disabledItemsFocusable={true} sx={{ pb: '4px', pt: '4px' }}>
           {!loading ? (
             <Box>
               {credentials.length === 0 && props.unlockedDatabaseAvailable && (

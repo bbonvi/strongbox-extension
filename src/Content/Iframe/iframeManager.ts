@@ -81,9 +81,7 @@ export class IframeManager {
 
       const onMainPageScrolled = () => {
         if (this.iframeComponentType == IframeComponentTypes.InlineMiniFieldMenu) {
-          const inputRect = this.anchorEl.getBoundingClientRect();
-          this.iframe.style.top = inputRect.bottom + 'px';
-          this.iframe.style.left = inputRect.left + 'px';
+          this.positionInlineMenu();
         }
       };
 
@@ -96,6 +94,11 @@ export class IframeManager {
           case IframeMessageTypes.resize: {
             this.iframe.style.width = event.data.data.width;
             this.iframe.style.height = event.data.data.height;
+            if (this.iframeComponentType == IframeComponentTypes.InlineMiniFieldMenu) {
+              const w = parseInt(event.data.data.width) || 0;
+              const h = parseInt(event.data.data.height) || 0;
+              this.positionInlineMenu(w, h);
+            }
             break;
           }
           case IframeMessageTypes.backToInlineMiniFieldMenu: {
@@ -243,6 +246,35 @@ export class IframeManager {
     }
   }
 
+  positionInlineMenu(iframeW?: number, iframeH?: number) {
+    const inputRect = this.anchorEl.getBoundingClientRect();
+    if (!iframeW) iframeW = parseInt(this.iframe.style.width) || this.iframe.offsetWidth || 0;
+    if (!iframeH) iframeH = parseInt(this.iframe.style.height) || this.iframe.offsetHeight || 0;
+    const viewW = document.documentElement.clientWidth;
+    const viewH = document.documentElement.clientHeight;
+
+    let top = inputRect.bottom;
+    let left = inputRect.left;
+
+    // Clamp right edge
+    if (left + iframeW > viewW) {
+      left = Math.max(0, viewW - iframeW);
+    }
+
+    // If popup overflows bottom, show above the input instead
+    if (top + iframeH > viewH) {
+      const above = inputRect.top - iframeH;
+      if (above >= 0) {
+        top = above;
+      } else {
+        top = inputRect.top > viewH - inputRect.bottom ? Math.max(0, inputRect.top - iframeH) : inputRect.bottom;
+      }
+    }
+
+    this.iframe.style.top = top + 'px';
+    this.iframe.style.left = left + 'px';
+  }
+
   restoreFocus() {
     requestAnimationFrame(() => {
       this.anchorEl?.focus();
@@ -279,6 +311,7 @@ export class IframeManager {
         this.iframe.style.width = '0px';
         this.iframe.style.height = '0px';
 
+        // Re-clamp after content loads via the resize handler
         break;
       }
       case IframeComponentTypes.CreateNewEntryDialog: {
