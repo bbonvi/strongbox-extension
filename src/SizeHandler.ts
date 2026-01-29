@@ -16,37 +16,37 @@ const popupComponent = {
 
 const inlineMenu = {
   width: {
-    s: '270px',
-    m: '300px',
-    l: '360px',
-    xl: '380px',
+    s: '360px',
+    m: '420px',
+    l: '480px',
+    xl: '520px',
   },
   height: {
-    s: '184px',
-    m: '210px',
-    l: '255px',
-    xl: '291px',
+    s: '260px',
+    m: '320px',
+    l: '380px',
+    xl: '420px',
   },
   fontSize: {
-    s: '10px',
-    m: '11px',
+    s: '11px',
+    m: '12px',
     l: '13px',
-    xl: '15px',
+    xl: '14px',
   },
   marginRight: {
-    s: '10px',
-    m: '25px',
-    l: '35px',
-    xl: '43px',
+    s: '4px',
+    m: '14px',
+    l: '18px',
+    xl: '22px',
   },
 };
 
 const bottomToolbarIcon = {
   fontSize: {
-    s: '15px',
-    m: '20px',
-    l: '22px',
-    xl: '25px',
+    s: '14px',
+    m: '17px',
+    l: '19px',
+    xl: '21px',
   },
 };
 

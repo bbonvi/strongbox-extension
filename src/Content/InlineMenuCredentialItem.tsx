@@ -153,64 +153,65 @@ export function InlineMenuCredentialItem(props: InlineMenuCredentialItemProps): 
       onClick={() => {
         handleCredentialClick(credential);
       }}
-      sx={{ p: `7.5px ${sizeHandler.getInlineMenuMarginRight(settings)} 7px 8px` }}
+      sx={{
+        py: '4px',
+        px: '10px',
+        pr: sizeHandler.getInlineMenuMarginRight(settings),
+        minHeight: '38px',
+        borderRadius: '6px',
+        mx: '4px',
+        my: '1px',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif',
+        '&:hover': {
+          backgroundColor: theme => theme.palette.mode === 'dark'
+            ? 'rgba(59,130,246,0.18)'
+            : 'rgba(59,130,246,0.08)',
+        },
+        '&.Mui-selected': {
+          backgroundColor: theme => theme.palette.mode === 'dark'
+            ? 'rgba(59,130,246,0.30)'
+            : 'rgba(59,130,246,0.14)',
+        },
+        '&.Mui-selected:hover': {
+          backgroundColor: theme => theme.palette.mode === 'dark'
+            ? 'rgba(59,130,246,0.35)'
+            : 'rgba(59,130,246,0.18)',
+        },
+      }}
     >
-      <Box sx={{ display: 'flex', gap: '0px', flexDirection: 'row', alignItems: 'center', flexGrow: 1 }}>
-        <Box sx={{ flexShrink: 1, pl: '5px' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', flexGrow: 1, gap: '8px' }}>
+        <Box sx={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', width: 24, minWidth: 24 }}>
           {loadingIcon ? (
-            <Box
-              display="block"
-              sx={{
-                width: 15,
-                margin: 'auto',
-                pl: '5px',
-                mr: '12px',
-              }}
-            >
-              <CircularProgress style={{ color: 'gray' }} size={20} />
-            </Box>
+            <CircularProgress style={{ color: 'gray' }} size={16} />
           ) : icon ? (
             <Box
               component="img"
               display="block"
               sx={{
-                height: 32,
-                width: 32,
+                height: 24,
+                width: 24,
                 borderRadius: '5px',
               }}
               alt="Icon"
               src={icon}
             />
           ) : (
-            <Box
-              display="block"
-              sx={{
-                width: 15,
-                margin: 'auto',
-                pl: '5px',
-                mr: '12px',
-              }}
-            >
-              <Badge fontSize="medium" />
-            </Box>
+            <Badge sx={{ fontSize: 18, opacity: 0.4 }} />
           )}
         </Box>
         <Box
           sx={{
             display: 'flex',
-            gap: '0px',
             flexDirection: 'column',
             flexGrow: 1,
             width: 0,
-            ml: '8px',
+            gap: 0,
           }}
         >
           <Box
             sx={{
               display: 'flex',
               justifyContent: 'space-between',
-              gap: '0px',
-              alignContent: 'center',
               alignItems: 'center',
             }}
           >
@@ -221,10 +222,14 @@ export function InlineMenuCredentialItem(props: InlineMenuCredentialItemProps): 
                 textAlign: 'left',
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
-                mr: !settings.hideCredentialDetailsOnInlineMenu ? 0 : 2,
+                mr: !settings.hideCredentialDetailsOnInlineMenu ? 0 : 1,
                 textOverflow: `${!settings.hideCredentialDetailsOnInlineMenu ? 'ellipsis' : 'none'}`,
+                fontSize: '0.8125rem',
+                fontWeight: 500,
+                lineHeight: 1.35,
+                letterSpacing: '-0.01em',
               }}
-              variant="body1"
+              variant="body2"
             >
               {credential.title}
             </Typography>
@@ -232,50 +237,62 @@ export function InlineMenuCredentialItem(props: InlineMenuCredentialItemProps): 
               sx={{
                 display: 'flex',
                 flexDirection: 'row',
-                gap: '1px',
-                justifyItems: 'center',
+                gap: 0,
                 alignItems: 'center',
+                flexShrink: 0,
               }}
             >
               {credential.totp.length > 0 && (
-                <Button size="small" onClick={onCopyTotp}>
-                  <Typography
-                    sx={{
-                      pb: 0,
-                      mb: 0,
-                      textAlign: 'left',
-                    }}
-                    variant="caption"
-                  >
-                    {getCurrentTotpCode(credential)}
-                  </Typography>
+                <Button
+                  size="small"
+                  onClick={onCopyTotp}
+                  sx={{
+                    minWidth: 0,
+                    px: '6px',
+                    py: '1px',
+                    fontSize: '0.675rem',
+                    lineHeight: 1,
+                    fontFamily: 'SF Mono, Menlo, monospace',
+                    fontWeight: 600,
+                    borderRadius: '4px',
+                    backgroundColor: theme => theme.palette.mode === 'dark' ? 'rgba(59,130,246,0.15)' : 'rgba(59,130,246,0.08)',
+                    color: theme => theme.palette.mode === 'dark' ? 'rgba(130,177,255,0.95)' : 'rgba(30,90,210,0.85)',
+                    '&:hover': {
+                      backgroundColor: theme => theme.palette.mode === 'dark' ? 'rgba(59,130,246,0.25)' : 'rgba(59,130,246,0.14)',
+                    },
+                  }}
+                >
+                  {getCurrentTotpCode(credential)}
                 </Button>
               )}
-              <Box>
-                <Tooltip title={t('inline-menu-credential-item.large-text-view')} placement="top" arrow>
-                  <IconButton sx={{ m: 0, fontSize: sizeHandler.getLargeTextViewIconSize() }} onClick={handleLargeTextView}>
-                    <FontDownloadOutlinedIcon fontSize="inherit" sx={{ color: 'gray', '&:hover': { color: '#90caf9' } }} />
-                  </IconButton>
-                </Tooltip>
-              </Box>
               <Menu
                 id="basic-menu"
                 anchorEl={anchorEl}
                 open={open}
                 onClose={handleClose}
-                sx={{ zIndex: '2147483642', height: '200px' }}
+                sx={{ zIndex: '2147483642' }}
                 MenuListProps={{
                   'aria-labelledby': 'basic-button',
                   sx: { p: 0 },
                 }}
+                PaperProps={{ sx: { borderRadius: '8px', boxShadow: '0 4px 20px rgba(0,0,0,0.12)', border: '1px solid', borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)' } }}
                 onClick={e => e.stopPropagation()}
               >
-                <MenuItem onClick={onCopyUsername}>{t('inline-menu-credential-item.copy-username')}</MenuItem>
-                <MenuItem onClick={onCopyPassword}>{t('inline-menu-credential-item.copy-password')}</MenuItem>
+                <MenuItem dense onClick={onCopyUsername}>{t('inline-menu-credential-item.copy-username')}</MenuItem>
+                <MenuItem dense onClick={onCopyPassword}>{t('inline-menu-credential-item.copy-password')}</MenuItem>
               </Menu>
               {settings.hideCredentialDetailsOnInlineMenu && (
-                <IconButton size="small" onClick={handleMoreButtonClick}>
-                  <MoreHoriz fontSize="small" />
+                <IconButton
+                  size="small"
+                  sx={{
+                    p: '3px',
+                    borderRadius: '4px',
+                    opacity: 0.35,
+                    '&:hover': { opacity: 0.7, backgroundColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)' },
+                  }}
+                  onClick={handleMoreButtonClick}
+                >
+                  <MoreHoriz sx={{ fontSize: 16 }} />
                 </IconButton>
               )}
 
@@ -300,9 +317,10 @@ export function InlineMenuCredentialItem(props: InlineMenuCredentialItemProps): 
                 onClick={e => e.stopPropagation()}
                 PaperProps={{
                   sx: {
-                    backgroundColor: '#hhh',
-                    boxShadow: 'none',
-                    borderRadius: '6px',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.16), 0 2px 6px rgba(0,0,0,0.08)',
+                    borderRadius: '10px',
+                    border: '1px solid',
+                    borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)',
                   },
                 }}
               >
@@ -345,15 +363,19 @@ export function InlineMenuCredentialItem(props: InlineMenuCredentialItemProps): 
               </Menu>
             </Box>
           </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: '5px', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: '4px', alignItems: 'center' }}>
             <Typography
               sx={{
                 color: 'text.secondary',
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
                 textOverflow: 'ellipsis',
+                fontSize: '0.6875rem',
+                lineHeight: 1.25,
+                opacity: 0.6,
+                letterSpacing: '0.01em',
               }}
-              variant="body2"
+              variant="caption"
             >
               {credential.username}
             </Typography>
@@ -364,9 +386,10 @@ export function InlineMenuCredentialItem(props: InlineMenuCredentialItemProps): 
                   overflow: 'hidden',
                   whiteSpace: 'nowrap',
                   textOverflow: 'ellipsis',
-                  pr: '5px',
+                  fontSize: '0.65rem',
+                  opacity: 0.5,
                 }}
-                variant="body2"
+                variant="caption"
               >
                 {credential.databaseName}
               </Typography>
@@ -374,13 +397,36 @@ export function InlineMenuCredentialItem(props: InlineMenuCredentialItemProps): 
           </Box>
         </Box>
 
-        {!settings.hideCredentialDetailsOnInlineMenu && (
-          <Box sx={{ height: '100%', position: 'absolute', right: 0 }}>
-            <IconButton sx={{ borderRadius: 0, p: 0, m: 0, height: '100%' }} onClick={handleDetailsButtonClick}>
-              <ChevronRightIcon fontSize="medium" style={{ color: 'gray' }} />
+        <Box sx={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: '1px', ml: '2px' }}>
+          <Tooltip title={t('inline-menu-credential-item.large-text-view')} placement="top" arrow>
+            <IconButton
+              size="small"
+              sx={{
+                p: '3px',
+                borderRadius: '4px',
+                opacity: 0.35,
+                '&:hover': { opacity: 0.7, backgroundColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)' },
+              }}
+              onClick={handleLargeTextView}
+            >
+              <FontDownloadOutlinedIcon sx={{ fontSize: 16 }} />
             </IconButton>
-          </Box>
-        )}
+          </Tooltip>
+          {!settings.hideCredentialDetailsOnInlineMenu && (
+            <IconButton
+              size="small"
+              sx={{
+                p: '3px',
+                borderRadius: '4px',
+                opacity: 0.35,
+                '&:hover': { opacity: 0.7, backgroundColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)' },
+              }}
+              onClick={handleDetailsButtonClick}
+            >
+              <ChevronRightIcon sx={{ fontSize: 16 }} />
+            </IconButton>
+          )}
+        </Box>
       </Box>
     </MenuItem>
   );

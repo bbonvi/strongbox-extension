@@ -123,9 +123,9 @@ export function CustomStyleProvider({ children }: ThemeProviderProps) {
     
     let styleElement = document.createElement('style');
     let cssRules = `
-    ::-webkit-scrollbar {width: 10px;}
-    ::-webkit-scrollbar-track {background: transparent;border-radius: 15px;}
-    ::-webkit-scrollbar-thumb {background:  ${darkMode ? StrongboxColours.scrollbar.thumb.background.dark : StrongboxColours.scrollbar.thumb.background.light};border-radius: 6px;}
+    ::-webkit-scrollbar {width: 6px;}
+    ::-webkit-scrollbar-track {background: transparent;border-radius: 3px;}
+    ::-webkit-scrollbar-thumb {background:  ${darkMode ? StrongboxColours.scrollbar.thumb.background.dark : StrongboxColours.scrollbar.thumb.background.light};border-radius: 3px;}
     ::-webkit-scrollbar-thumb:hover {background: ${darkMode ? StrongboxColours.scrollbar.thumb.hover.background.dark : StrongboxColours.scrollbar.thumb.hover.background.light};}`;
     styleElement.innerHTML = cssRules;
     styleElement.id = 'custom-scrollbar-style';

@@ -288,7 +288,7 @@ export default function InlineMiniFieldMenu(props: InlineMiniFieldMenuProps) {
     return credentialResultsCompleted || credentials.length === 0 ? null : (
       <div
         style={{
-          padding: '2rem',
+          padding: '0.75rem',
           display: 'flex',
           justifyContent: 'center',
         }}
@@ -327,17 +327,34 @@ export default function InlineMiniFieldMenu(props: InlineMiniFieldMenuProps) {
   };
 
   return (
-    <Paper sx={{ display: 'inline-block', zIndex: '2147483640', borderRadius: '15px' }}>
+    <Paper
+      elevation={0}
+      sx={{
+        display: 'inline-block',
+        zIndex: '2147483640',
+        borderRadius: '10px',
+        overflow: 'hidden',
+        border: '1px solid',
+        borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)',
+        backdropFilter: 'blur(20px) saturate(180%)',
+        backgroundColor: theme => theme.palette.mode === 'dark'
+          ? 'rgba(40,40,44,0.95)'
+          : 'rgba(255,255,255,0.92)',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif',
+      }}
+    >
       {!showLargeTextView && (
-        <MenuList autoFocusItem={false} disabledItemsFocusable={true} sx={{ pb: 0, pt: 0 }}>
+        <MenuList autoFocusItem={false} disabledItemsFocusable={true} sx={{ pb: 0, pt: '4px' }}>
           {!loading ? (
             <Box>
               {credentials.length === 0 && props.unlockedDatabaseAvailable && (
                 <Box sx={{ width: sizeHandler.getInlineMenuWidth() }}>
-                  <MenuItem disabled dense>
-                    <Box sx={{ display: 'flex', gap: '12px', alignItems: 'center', pb: 1, pt: 1 }}>
-                      <SearchOff />
-                      {t('inline-mini-field-menu.no-matching-entries-found')}
+                  <MenuItem disabled dense sx={{ minHeight: '28px' }}>
+                    <Box sx={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                      <SearchOff sx={{ fontSize: 16, opacity: 0.6 }} />
+                      <Typography variant="body2" sx={{ opacity: 0.7 }}>
+                        {t('inline-mini-field-menu.no-matching-entries-found')}
+                      </Typography>
                     </Box>
                   </MenuItem>
                 </Box>
@@ -345,7 +362,7 @@ export default function InlineMiniFieldMenu(props: InlineMiniFieldMenuProps) {
 
               {(credentials.length <= 3 && !searching) || (credentials.length <= 2 && searching) ? (
                 credentials.map(credential => (
-                  <Box key={credential.uuid} sx={{ maxHeight: sizeHandler.getInlineMenuHeight(props.inlineMenuTruncatedHeight), width: sizeHandler.getInlineMenuWidth(), pt: 2 }}>
+                  <Box key={credential.uuid} sx={{ maxHeight: sizeHandler.getInlineMenuHeight(props.inlineMenuTruncatedHeight), width: sizeHandler.getInlineMenuWidth() }}>
                     <InlineMenuCredentialItem
                       status={props.status}
                       credential={credential}
@@ -366,7 +383,7 @@ export default function InlineMiniFieldMenu(props: InlineMiniFieldMenuProps) {
                   </Box>
                 ))
               ) : (
-                <Box sx={{ maxHeight: sizeHandler.getInlineMenuHeight(props.inlineMenuTruncatedHeight), width: sizeHandler.getInlineMenuWidth(), pt: 2 }}>
+                <Box sx={{ maxHeight: sizeHandler.getInlineMenuHeight(props.inlineMenuTruncatedHeight), width: sizeHandler.getInlineMenuWidth() }}>
                   <Virtuoso
                     style={{
                       minHeight: `${credentials.length === 0 ? '0px' : sizeHandler.getInlineMenuHeight(props.inlineMenuTruncatedHeight)}`,
@@ -407,21 +424,21 @@ export default function InlineMiniFieldMenu(props: InlineMiniFieldMenuProps) {
               )}
             </Box>
           ) : (
-            <div style={{ textAlign: 'center', width: sizeHandler.getInlineMenuWidth(), paddingTop: '10px', paddingBottom: '10px' }}>
-              <CircularProgress size="1rem" />
-              <Box>
-                <Typography color="text.secondary" variant="body1" sx={{ textAlign: 'center' }}>
-                  {searching ? t('general.searching') : t('general.loading')}
-                </Typography>
-              </Box>
-            </div>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: sizeHandler.getInlineMenuWidth(), py: '8px' }}>
+              <CircularProgress size="0.875rem" />
+              <Typography color="text.secondary" variant="body2">
+                {searching ? t('general.searching') : t('general.loading')}
+              </Typography>
+            </Box>
           )}
 
           {!props.showCreateNew && props.unlockableDatabases.length == 0 && credentials.length === 0 ? (
-            <MenuItem disabled dense>
-              <Box sx={{ display: 'flex', gap: '12px', alignItems: 'center', pt: '5px' }}>
-                <ExploreOffOutlined />
-                {t('inline-mini-field-menu.no-autofill-enabled-databases')}
+            <MenuItem disabled dense sx={{ minHeight: '28px' }}>
+              <Box sx={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                <ExploreOffOutlined sx={{ fontSize: 16, opacity: 0.6 }} />
+                <Typography variant="body2" sx={{ opacity: 0.7 }}>
+                  {t('inline-mini-field-menu.no-autofill-enabled-databases')}
+                </Typography>
               </Box>
             </MenuItem>
           ) : (
@@ -431,7 +448,7 @@ export default function InlineMiniFieldMenu(props: InlineMiniFieldMenuProps) {
       )}
 
       {showLargeTextView && (
-        <Box sx={{ overflowY: 'auto', maxHeight: sizeHandler.getInlineMenuHeight(props.inlineMenuTruncatedHeight), width: sizeHandler.getInlineMenuWidth(), mt: 1, mb: 1 }}>
+        <Box sx={{ overflowY: 'auto', maxHeight: sizeHandler.getInlineMenuHeight(props.inlineMenuTruncatedHeight), width: sizeHandler.getInlineMenuWidth(), mt: 0.5, mb: 0.5 }}>
           <LargeTextView onFillSingleField={props.onFillSingleField} status={props.status} text={largeTextViewString} />
         </Box>
       )}
@@ -453,214 +470,136 @@ export default function InlineMiniFieldMenu(props: InlineMiniFieldMenuProps) {
 
       {(!showSearchBar || (showSearchBar && showLargeTextView)) && (
         <Box>
-          <Divider />
+          <Divider sx={{ borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)' }} />
 
           {!showLargeTextView && (
-            <ButtonGroup
-              style={{ alignItems: 'center' }}
-              variant="outlined"
-              aria-label="outlined button group"
+            <Box
               sx={{
                 width: props.unlockedDatabaseAvailable ? sizeHandler.getInlineMenuWidth() : '100%',
                 display: 'flex',
-                justifyContent: 'space-between',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 0,
+                backgroundColor: theme => theme.palette.mode === 'dark'
+                  ? 'rgba(255,255,255,0.03)'
+                  : 'rgba(0,0,0,0.02)',
               }}
             >
               {props.unlockedDatabaseAvailable && (
                 <Button
+                  size="small"
                   sx={{
-                    flexGrow: 1,
+                    flex: 1,
                     fontSize: sizeHandler.getInlineMenuFontSize(),
-                    overflow: 'hidden',
-                    height: '40px',
-                    borderBottomLeftRadius: 15,
-                    borderBottom: 'none',
-                    borderLeft: 'none',
-                    borderTop: 'none',
-                    boxShadow: 'none',
-                    '&:hover': {
-                      boxShadow: 'none',
-                      borderLeft: 'none',
-                      borderBottom: 'none',
-                      borderTop: 'none',
-                    },
+                    height: '30px',
+                    borderRadius: 0,
+                    textTransform: 'none',
+                    color: 'text.secondary',
+                    gap: '4px',
+                    minWidth: 0,
+                    '&:hover': { backgroundColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)' },
                   }}
                   onClick={handleCreateNewEntry}
-                  variant="outlined"
                 >
-                  <Box
-                    sx={{
-                      alignContent: 'center',
-                      justifyContent: 'center',
-                      cursor: 'pointer',
-                      display: 'flex',
-                    }}
-                  >
-                    <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', p: 0.5 }}>
-                      <AddCircleOutlineOutlinedIcon sx={{ fontSize: sizeHandler.getBottomToolbarIconSize() }} />
-                    </Box>
-
-                    <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>{t('general.create')}</Box>
-                  </Box>
+                  <AddCircleOutlineOutlinedIcon sx={{ fontSize: sizeHandler.getBottomToolbarIconSize() }} />
+                  {t('general.create')}
                 </Button>
               )}
 
               {props.unlockedDatabaseAvailable && (
                 <Button
+                  size="small"
                   onClick={() => setShowSearchBar(true)}
-                  variant="outlined"
                   sx={{
-                    flexGrow: 1,
+                    flex: 1,
                     fontSize: sizeHandler.getInlineMenuFontSize(),
-                    overflow: 'hidden',
-                    height: '40px',
-                    borderBottomRightRadius: 15,
-                    borderBottom: 'none',
-                    borderTop: 'none',
-                    '&:hover': {
-                      borderBottom: 'none',
-                      borderTop: 'none',
-                    },
+                    height: '30px',
+                    borderRadius: 0,
+                    textTransform: 'none',
+                    color: 'text.secondary',
+                    gap: '4px',
+                    minWidth: 0,
+                    '&:hover': { backgroundColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)' },
                   }}
                 >
-                  <Box
-                    sx={{
-                      alignContent: 'center',
-                      justifyContent: 'center',
-                      cursor: 'pointer',
-                      display: 'flex',
-                    }}
-                  >
-                    <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', p: 0.5 }}>
-                      <SearchIcon sx={{ fontSize: sizeHandler.getBottomToolbarIconSize() }} />
-                    </Box>
-
-                    <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>{t('general.search')}</Box>
-                  </Box>
+                  <SearchIcon sx={{ fontSize: sizeHandler.getBottomToolbarIconSize() }} />
+                  {t('general.search')}
                 </Button>
               )}
 
               {props.unlockableDatabases.length !== 0 && (
                 <Button
+                  size="small"
                   onClick={handleOpenUnlockDatabasesMenu}
-                  variant="outlined"
                   sx={{
-                    flexGrow: 1,
+                    flex: 1,
                     fontSize: sizeHandler.getInlineMenuFontSize(),
-                    overflow: 'hidden',
-                    height: '40px',
-                    borderBottom: 'none',
-                    borderTop: 'none',
-                    borderLeft: !props.unlockedDatabaseAvailable ? 'none' : '',
-                    '&:hover': {
-                      borderLeft: !props.unlockedDatabaseAvailable ? 'none' : '',
-                      borderBottom: 'none',
-                      borderTop: 'none',
-                    },
+                    height: '30px',
+                    borderRadius: 0,
+                    textTransform: 'none',
+                    color: 'text.secondary',
+                    gap: '4px',
+                    minWidth: 0,
+                    '&:hover': { backgroundColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)' },
                   }}
                 >
-                  <Box
-                    sx={{
-                      alignContent: 'center',
-                      justifyContent: 'center',
-                      cursor: 'pointer',
-                      display: 'flex',
-                    }}
-                  >
-                    <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', p: 0.5 }}>
-                      {pendingUnlockDatabases.size !== 0 ? (
-                        <CircularProgress style={{ color: 'gray' }} size={20} />
-                      ) : (
-                        <LockOpenIcon sx={{ fontSize: sizeHandler.getBottomToolbarIconSize() }}></LockOpenIcon>
-                      )}
-                    </Box>
-
-                    <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>{!props.unlockedDatabaseAvailable && t('database-list-item.unlock')}</Box>
-                  </Box>
+                  {pendingUnlockDatabases.size !== 0 ? (
+                    <CircularProgress style={{ color: 'gray' }} size={16} />
+                  ) : (
+                    <LockOpenIcon sx={{ fontSize: sizeHandler.getBottomToolbarIconSize() }} />
+                  )}
+                  {!props.unlockedDatabaseAvailable && t('database-list-item.unlock')}
                 </Button>
               )}
 
               <Button
+                size="small"
                 onClick={handleOpenHideMenu}
-                variant="outlined"
                 sx={{
-                  flexGrow: 1,
+                  flex: 1,
                   fontSize: sizeHandler.getInlineMenuFontSize(),
-                  overflow: 'hidden',
-                  height: '40px',
-                  borderBottom: 'none',
-                  borderRight: 'none',
-                  borderTop: 'none',
-                  borderBottomRightRadius: 15,
-                  '&:hover': {
-                    borderRight: 'none',
-                    borderBottom: 'none',
-                    borderTop: 'none',
-                  },
+                  height: '30px',
+                  borderRadius: 0,
+                  textTransform: 'none',
+                  color: 'text.secondary',
+                  gap: '4px',
+                  minWidth: 0,
+                  '&:hover': { backgroundColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)' },
                 }}
               >
-                <Box
-                  sx={{
-                    alignContent: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    display: 'flex',
-                  }}
-                >
-                  <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', p: 0.5 }}>
-                    <CancelOutlinedIcon sx={{ fontSize: sizeHandler.getBottomToolbarIconSize() }} />
-                  </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>{!props.unlockedDatabaseAvailable && t('general.dismiss')}</Box>
-                </Box>
+                <CancelOutlinedIcon sx={{ fontSize: sizeHandler.getBottomToolbarIconSize() }} />
+                {!props.unlockedDatabaseAvailable && t('general.dismiss')}
               </Button>
-            </ButtonGroup>
+            </Box>
           )}
 
           {showLargeTextView && (
-            <ButtonGroup
-              style={{ alignItems: 'center' }}
-              variant="outlined"
-              aria-label="outlined button group"
+            <Box
               sx={{
                 width: props.unlockedDatabaseAvailable ? sizeHandler.getInlineMenuWidth() : '100%',
                 display: 'flex',
-                justifyContent: 'space-between',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
               <Button
+                size="small"
                 sx={{
-                  flexGrow: 1,
+                  flex: 1,
                   fontSize: sizeHandler.getInlineMenuFontSize(),
-                  overflow: 'hidden',
-                  height: '40px',
-                  borderBottomLeftRadius: 15,
-                  borderBottomRightRadius: 15,
-                  border: 'none',
-                  boxShadow: 'none',
-                  '&:hover': {
-                    boxShadow: 'none',
-                    border: 'none',
-                  },
+                  height: '30px',
+                  borderRadius: 0,
+                  textTransform: 'none',
+                  color: 'text.secondary',
+                  gap: '4px',
+                  '&:hover': { backgroundColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)' },
                 }}
                 onClick={handleBackLargetextView}
-                variant="outlined"
               >
-                <Box
-                  sx={{
-                    alignContent: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    display: 'flex',
-                  }}
-                >
-                  <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', p: 0.5 }}>
-                    <ArrowCircleLeftOutlinedIcon sx={{ fontSize: sizeHandler.getBottomToolbarIconSize() }} />
-                  </Box>
-
-                  <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>{t('general.back')}</Box>
-                </Box>
+                <ArrowCircleLeftOutlinedIcon sx={{ fontSize: sizeHandler.getBottomToolbarIconSize() }} />
+                {t('general.back')}
               </Button>
-            </ButtonGroup>
+            </Box>
           )}
 
           <HideInlineMenu
